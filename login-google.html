@@ -1,0 +1,49 @@
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+    <meta name="google-signin-scope" content="profile email">
+    <meta name="google-signin-client_id"
+          content="fill-your-google-signin-client-id">
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
+</head>
+<body>
+<div id="my-signin2"></div>
+<script>
+    function onSuccess(googleUser) {
+        console.log(googleUser);
+        console.log('Logged in as: ' + googleUser.getBasicProfile().getName());
+
+        axios.post('http://localhost:7788/login',
+            JSON.stringify({
+                accessToken: googleUser.getAuthResponse().access_token,
+                oauthSource: 2
+            })
+        ).then(response => {
+            console.log(response);
+        });
+    }
+
+    function onFailure(error) {
+        console.log(error);
+    }
+
+    function renderButton() {
+        gapi.signin2.render('my-signin2', {
+            'scope': 'profile email',
+            'width': 240,
+            'height': 50,
+            'longtitle': true,
+            'theme': 'dark',
+            'onsuccess': onSuccess,
+            'onfailure': onFailure
+        });
+    }
+</script>
+
+<script src="https://apis.google.com/js/platform.js?onload=renderButton" async defer></script>
+</body>
+</html>

@@ -1,0 +1,35 @@
+<html>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<body>
+
+<div class="fb-login-button"
+     data-width=""
+     data-size="large"
+     data-button-type="continue_with"
+     data-auto-logout-link="false"
+     data-use-continue-as="false"
+     data-onlogin="onLogin"
+     data-scope="public_profile,email"
+>
+</div>
+
+</body>
+
+<div id="fb-root"></div>
+<script async defer crossorigin="anonymous"
+        src="https://connect.facebook.net/zh_TW/sdk.js#xfbml=1&version=v4.0&appId=fill-your-fb-app-id&autoLogAppEvents=1"></script>
+<script>
+    function onLogin(response) {
+        console.log(response);
+        axios.post('http://localhost:7788/login',
+            JSON.stringify({
+                accessToken: response.accessToken,
+                oauthSource: 1
+            })
+        ).then(response => {
+            console.log(response);
+        });
+    }
+</script>
+
+</html>
